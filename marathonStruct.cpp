@@ -15,7 +15,8 @@ struct runner{
 };
 
 string getData();
-bool readRunnerData(ifstream &file, string filename, runner runners[], int maxRunners);
+bool openFile(ifstream &file, string filename);
+int readRunnerData(ifstream& file, runner runners[], int maxRunners);
 void calculateResults(runner runners[], int runnerCount);
 void displayResults(runner runners[], int runnerCount);
 
@@ -25,10 +26,10 @@ int main() {
 	ifstream file;
 
 	string filename = getData();
-	if (!readRunnerData(file, filename, runners, NUMRUNNERS)) {
+	if (!openFile(file, filename)) {
 		return 1;
 	}
-	runnerCount = readRunnerData(file, runners, runners, NUMRUNNERS);
+	runnerCount = readRunnerData(file, runners, NUMRUNNERS);
 	file.close();
 
 	calculateResults(runners, runnerCount);
@@ -44,7 +45,7 @@ string getData() {
 	return filename;
 }
 
-bool readRunnerData(ifstream& file, string filename, runner runners[], int maxRunners) {
+bool openFile(ifstream& file, string filename) {
 	ifstream file;
 	file.open(filename);
 
@@ -53,14 +54,18 @@ bool readRunnerData(ifstream& file, string filename, runner runners[], int maxRu
 		return false;
 	}
 	return true;
+}
 
+int readRunnerData(ifstream& file, runner runners[], int maxRunners) {
 	int count = 0;
+
 	while (count < maxRunners && file >> runners[count].name) {
 		for (int j = 0; j < NUMDAYS; j++) {
 			file >> runners[count].miles[j];
 		}
 		count++;
 	}
+	return count;
 }
 
 void calculateResults(runner runners[], int runnerCount) {
