@@ -9,15 +9,15 @@ const int NUMDAYS = 7;
 
 struct runner{
 	string name;
-	double miles[DAYS];
+	double miles[NUMDAYS];
 	double total;
 	double average;
 };
 
 string getData();
-bool readRunnerData(ifstream file, string filename);
-void calculateResults();
-void displayResults();
+bool readRunnerData(ifstream &file, string filename, runner runners[], int maxRunners);
+void calculateResults(runner runners[], int runnerCount);
+void displayResults(runner runners[], int runnerCount);
 
 int main() {
 	runner runners[NUMRUNNERS];
@@ -25,10 +25,10 @@ int main() {
 	ifstream file;
 
 	string filename = getData();
-	if (!readRunnerData(file, filename)) {
+	if (!readRunnerData(file, filename, runners, NUMRUNNERS)) {
 		return 1;
 	}
-	runnerCount = readRunnerData(file, runners, NUMRUNNERS);
+	runnerCount = readRunnerData(file, runners, runners, NUMRUNNERS);
 	file.close();
 
 	calculateResults(runners, runnerCount);
@@ -44,7 +44,7 @@ string getData() {
 	return filename;
 }
 
-bool readRunnerData(ifstream file, string filename) {
+bool readRunnerData(ifstream& file, string filename, runner runners[], int maxRunners) {
 	ifstream file;
 	file.open(filename);
 
@@ -53,6 +53,14 @@ bool readRunnerData(ifstream file, string filename) {
 		return false;
 	}
 	return true;
+
+	int count = 0;
+	while (count < maxRunners && file >> runners[count].name) {
+		for (int j = 0; j < NUMDAYS; j++) {
+			file >> runners[count].miles[j];
+		}
+		count++;
+	}
 }
 
 void calculateResults(runner runners[], int runnerCount) {
@@ -73,7 +81,7 @@ void displayResults(runner runners[], int runnerCount)
 	}
 	cout << right << setw(10) << "Total" << setw(10) << "Average" << endl;
 
-	for (int i = 0; i < NUMRUNNERS; i++) {
+	for (int i = 0; i < runnerCount; i++) {
 		cout << left << setw(10) << runners[i].name;
 		for (int j = 0; j < NUMDAYS; j++) {
 			cout << right << setw(10) << fixed << setprecision(2) << runners[i].miles[j];
