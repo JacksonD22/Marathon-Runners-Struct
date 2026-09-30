@@ -8,10 +8,10 @@ const int NUMRUNNERS = 50;
 const int NUMDAYS = 7;
 
 struct runner{
-	string name;
-	double miles[NUMDAYS];
-	double total;
-	double average;
+	string name = "unknown";
+	double miles[NUMDAYS] = { 0 };
+	double total = 0;
+	double average = 0;
 };
 
 string getData();
