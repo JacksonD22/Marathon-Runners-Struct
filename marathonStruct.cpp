@@ -4,7 +4,7 @@
 #include <fstream>
 using namespace std;
 
-const int NUMRUNNERS = 5;
+const int NUMRUNNERS = 50;
 const int NUMDAYS = 7;
 
 struct runner{
@@ -46,7 +46,6 @@ string getData() {
 }
 
 bool openFile(ifstream& file, string filename) {
-	ifstream file;
 	file.open(filename);
 
 	if (!file) {
@@ -64,6 +63,11 @@ int readRunnerData(ifstream& file, runner runners[], int maxRunners) {
 			file >> runners[count].miles[j];
 		}
 		count++;
+	}
+
+	string extra;
+	if (count == maxRunners && file >> extra) {
+		cout << "File exceeds runner limit'\n";
 	}
 	return count;
 }
