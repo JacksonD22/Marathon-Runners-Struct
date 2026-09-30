@@ -55,29 +55,30 @@ bool readRunnerData(ifstream file, string filename) {
 	return true;
 }
 
-void calculateResults(double miles[][DAYS], double total[], double averages[], const int numRunners, const int numDays) {
-	for (int i = 0; i < numRunners; i++) {
-		total[i] = 0;
-		for (int j = 0; j < numDays; j++) {
-			total[i] += miles[i][j];
+void calculateResults(runner runners[], int runnerCount) {
+	for (int i = 0; i < runnerCount; i++) {
+		runners[i].total = 0;
+		for (int j = 0; j < NUMDAYS; j++) {
+			runners[i].total += runners[i].miles[j];
 		}
-		averages[i] = total[i] / numDays;
+		runners[i].average = runners[i].total / NUMDAYS;
 	}
 }
 
-void displayResults(string names[], double miles[][DAYS], double total[], double averages[], const int numRunners, const int numDays) {
+void displayResults(runner runners[], int runnerCount) 
+{
 	cout << left << setw(10) << "Runner";
-	for (int j = 0; j < numDays; j++) {
+	for (int j = 0; j < NUMDAYS; j++) {
 		cout << right << setw(10) << ("Day " + to_string(j + 1));
 	}
 	cout << right << setw(10) << "Total" << setw(10) << "Average" << endl;
 
-	for (int i = 0; i < numRunners; i++) {
-		cout << left << setw(10) << names[i];
-		for (int j = 0; j < numDays; j++) {
-			cout << right << setw(10) << fixed << setprecision(2) << miles[i][j];
+	for (int i = 0; i < NUMRUNNERS; i++) {
+		cout << left << setw(10) << runners[i].name;
+		for (int j = 0; j < NUMDAYS; j++) {
+			cout << right << setw(10) << fixed << setprecision(2) << runners[i].miles[j];
 		}
-		cout << right << setw(10) << fixed << setprecision(2) << total[i];
-		cout << right << setw(10) << fixed << setprecision(2) << averages[i] << endl;
+		cout << right << setw(10) << fixed << setprecision(2) << runners[i].total;
+		cout << right << setw(10) << fixed << setprecision(2) << runners[i].average << endl;
 	}
 }
